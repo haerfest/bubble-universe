@@ -12,13 +12,14 @@ To run on macOS:
 
 Interaction:
 
-- The `escape` key exits.
-- The keys `1` and `2` change the number of objects `n` by one. Keep `shift` pressed for steps of 50.
-- The keys `3` and `4` do the same for the number of particles per object `m`.
-- The `space` key resets everything to the default universe.
+- `escape` exits.
+- `1` and `2` change the number of objects `n` by one. Keep `shift` pressed for steps of 50.
+- `3` and `4` do the same for the number of particles per object `m`.
+- `space` resets everything to the default universe.
+- `a` changes to an interesting figure.
 - Click the mouse in the figure to set the starting angles `rx` and `ry` between -2π and +2π.
 
-In the top-left corner the current frame rate is shown, as well as the values of `n`, `m`, `rx` and `ry`.
+In the top-left corner the current frame rate is shown, as well as the current values of `n`, `m`, `rx` and `ry`.
 
 Some images:
 
