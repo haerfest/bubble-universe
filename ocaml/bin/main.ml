@@ -7,11 +7,11 @@
  * $ dune exec bubble
  *)
 
-let (width, height) = (800, 600)
+let (width, height) = (1280, 800)
 and (n, m) = (200, 200)
 and (rx, ry) = (Float.pi *. 2.0 /. 235.0, 1.0)
 
-let (sx, sy) = ((float width) /. 4.1, (float height) /. 4.1)
+let (sx, sy) = (float (width - 20) /. 4.1, float (height - 20) /. 4.1)
 and (tx, ty) = (width / 2, height / 2)
 
 let sc = Float.min sx sy
@@ -21,6 +21,12 @@ let plot pixels (x, y) (r, g, b) =
         Bytes.set pixels (offset + 0) (Char.chr b) ;
         Bytes.set pixels (offset + 1) (Char.chr g) ;
         Bytes.set pixels (offset + 2) (Char.chr r)
+
+let plot4 pixels (x, y) (r, g, b) =
+        plot pixels (x + 0, y + 0) (r, g, b) ;
+        plot pixels (x + 1, y + 0) (r, g, b) ;
+        plot pixels (x + 0, y + 1) (r, g, b) ;
+        plot pixels (x + 1, y + 1) (r, g, b)
 
 let bubble surface ticks t =
         let pixels = String.to_bytes (Sdl.Surface.get_pixels surface)
@@ -38,7 +44,7 @@ let bubble surface ticks t =
                         let r = 255 * i / n
                         and g = 255 * j / m
                         and b = 255 * (n - i + m - j) / (n + m) in
-                        plot pixels (tx + int_of_float (sc *. !x), ty + int_of_float (sc *. !y)) (r, g, b)
+                        plot4 pixels (tx + int_of_float (sc *. !x), ty + int_of_float (sc *. !y)) (r, g, b)
                 done
         done ;
         Sdl.Surface.blit_pixels_unsafe surface (Bytes.to_string pixels) ;
@@ -63,7 +69,7 @@ let rec loop renderer surface ticks t =
  
 let () =
         Sdl.init [`VIDEO] ;
-        let window = Sdl.Window.create ~title:"Bubble Universe" ~pos:(`centered, `centered) ~dims:(width, height) ~flags:[Shown] in
+        let window = Sdl.Window.create ~title:"Bubble Universe" ~pos:(`centered, `centered) ~dims:(width, height) ~flags:[Shown; FullScreen_Desktop] in
         let renderer = Sdl.Render.create_renderer ~win:window ~index:(-1) ~flags:[Accelerated; PresentVSync]
         and surface = Sdl.Surface.create_rgb ~width:width ~height:height ~depth:24 in
         loop renderer surface 0 0.0
