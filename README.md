@@ -1,16 +1,15 @@
 # Bubble Universe
 
-Implementation of Bubble Universe in [Lua](https://www.lua.org) and [LÖVE](https://www.love2d.org).
+Implementation of Bubble Universe in:
+
+- [Lua](https://www.lua.org) with [LÖVE](https://www.love2d.org).
+- [OCaml](https://ocaml.org) with [ocamlsdl2](https://ocaml.org/p/ocamlsdl2/latest).
 
 See [this StarDot thread](https://www.stardot.org.uk/forums/viewtopic.php?t=25833) for context.
 
-To run on macOS:
+The Lua version is somewhat interactive, letting you generate alternative universes or patterns. The OCaml version displays just the default universe.
 
-1. Install [LÖVE](https://www.love2d.org) in `/Applications`.
-2. In a terminal, navigate to this repository, with the `main.lua` file.
-3. From there, issue `open /Applications/love.app --args $PWD`.
-
-Interaction:
+Interaction in the Lua version:
 
 - `escape` exits.
 - `1` and `2` change the number of objects `n` by one. Keep `shift` pressed for steps of 50.
