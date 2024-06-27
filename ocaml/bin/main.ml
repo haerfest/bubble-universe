@@ -28,7 +28,7 @@ let plot4 pixels (x, y) (r, g, b) =
         plot pixels (x + 0, y + 1) (r, g, b) ;
         plot pixels (x + 1, y + 1) (r, g, b)
 
-let bubble surface ticks t =
+let bubble t dt =
         let pixels = Bytes.make (width * height * bpp) (Char.chr 0)
         and x = ref 0.0
         and y = ref 0.0 in
@@ -46,11 +46,10 @@ let bubble surface ticks t =
                         plot4 pixels (tx + int_of_float (sc *. !x), ty + int_of_float (sc *. !y)) (r, g, b)
                 done
         done ;
-        Sdl.Surface.blit_pixels_unsafe surface (Bytes.to_string pixels) ;
-        let dt = float (Sdl.Timer.get_ticks () - ticks) /. 1000.0 in
-        t +. dt /. 22.0  (* About π / 4096 *)
+        (pixels, t +. dt /. 22.0)  (* About π / 4096 *)
 
-let blit renderer surface =
+let blit renderer surface pixels =
+        Sdl.Surface.blit_pixels_unsafe surface (Bytes.to_string pixels) ;
         let texture = Sdl.Texture.create_from_surface renderer surface in
         Sdl.Render.copy renderer ~texture:texture () ;
         Sdl.Render.render_present renderer ;
@@ -61,9 +60,11 @@ let rec loop renderer surface ticks t =
         | Some (Quit _) -> ()
         | Some (KeyDown {keycode = Sdlkeycode.Escape; _}) -> Sdlquit.quit ()
         | None ->
-                let t_new = bubble surface ticks t in
-                blit renderer surface ;
-                loop renderer surface (Sdl.Timer.get_ticks ()) t_new
+                let ticks' = Sdl.Timer.get_ticks () in
+                let dt = float (ticks' - ticks) /. 1000.0 in
+                let (pixels, t') = bubble t dt in
+                blit renderer surface pixels ;
+                loop renderer surface ticks' t'
         | _ -> loop renderer surface ticks t
  
 let () =
