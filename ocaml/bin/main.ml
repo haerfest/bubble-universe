@@ -11,7 +11,7 @@ let (width, height) = (1280, 800)
 and (n, m) = (200, 200)
 and (rx, ry) = (Float.pi *. 2.0 /. 235.0, 1.0)
 
-let (sx, sy) = (float (width - 20) /. 4.1, float (height - 20) /. 4.1)
+let (sx, sy) = (float (width - 20) /. 4.0, float (height - 20) /. 4.0)
 and (tx, ty) = (width / 2, height / 2)
 
 let sc = Float.min sx sy
