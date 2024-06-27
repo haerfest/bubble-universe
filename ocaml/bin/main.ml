@@ -7,7 +7,7 @@
  * $ dune exec bubble
  *)
 
-let (width, height) = (1280, 800)
+let (width, height, bpp) = (1280, 800, 3)
 and (n, m) = (200, 200)
 and (rx, ry) = (Float.pi *. 2.0 /. 235.0, 1.0)
 
@@ -17,7 +17,7 @@ and (tx, ty) = (width / 2, height / 2)
 let sc = Float.min sx sy
 
 let plot pixels (x, y) (r, g, b) =
-        let offset = (y * width + x) * 3 in
+        let offset = (y * width + x) * bpp in
         Bytes.set pixels (offset + 0) (Char.chr b) ;
         Bytes.set pixels (offset + 1) (Char.chr g) ;
         Bytes.set pixels (offset + 2) (Char.chr r)
@@ -29,10 +29,9 @@ let plot4 pixels (x, y) (r, g, b) =
         plot pixels (x + 1, y + 1) (r, g, b)
 
 let bubble surface ticks t =
-        let pixels = String.to_bytes (Sdl.Surface.get_pixels surface)
+        let pixels = Bytes.make (width * height * bpp) (Char.chr 0)
         and x = ref 0.0
         and y = ref 0.0 in
-        Bytes.fill pixels 0 (Bytes.length pixels) (Char.chr 0) ;
         for i = 0 to (n - 1) do
                 x := 0.0 ;
                 y := 0.0 ;
@@ -71,5 +70,5 @@ let () =
         Sdl.init [`VIDEO] ;
         let window = Sdl.Window.create ~title:"Bubble Universe" ~pos:(`centered, `centered) ~dims:(width, height) ~flags:[Shown; FullScreen_Desktop] in
         let renderer = Sdl.Render.create_renderer ~win:window ~index:(-1) ~flags:[Accelerated; PresentVSync]
-        and surface = Sdl.Surface.create_rgb ~width:width ~height:height ~depth:24 in
+        and surface = Sdl.Surface.create_rgb ~width:width ~height:height ~depth:(bpp * 8) in
         loop renderer surface 0 0.0
