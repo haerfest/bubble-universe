@@ -22,11 +22,11 @@ let plot pixels (x, y) (r, g, b) =
         Bytes.set pixels (offset + 1) (Char.chr g) ;
         Bytes.set pixels (offset + 2) (Char.chr r)
 
-let plot4 pixels (x, y) (r, g, b) =
-        plot pixels (x + 0, y + 0) (r, g, b) ;
-        plot pixels (x + 1, y + 0) (r, g, b) ;
-        plot pixels (x + 0, y + 1) (r, g, b) ;
-        plot pixels (x + 1, y + 1) (r, g, b)
+let plot4 pixels (x, y) rgb =
+        plot pixels (x + 0, y + 0) rgb ;
+        plot pixels (x + 1, y + 0) rgb ;
+        plot pixels (x + 0, y + 1) rgb ;
+        plot pixels (x + 1, y + 1) rgb
 
 let bubble t dt =
         let pixels = Bytes.make (width * height * bpp) (Char.chr 0)
